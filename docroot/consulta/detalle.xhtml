@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aui="http://liferay.com/faces/aui"
+	xmlns:aui-cc="http://liferay.com/faces/aui-cc"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:portlet="http://java.sun.com/portlet_2_0"
+	xmlns:p="http://primefaces.org/ui">
+<f:view encoding="UTF-8">
+
+
+<f:metadata>
+  <f:event type="preRenderView" listener="#{consultarAuditoriaBean.cargarObjeto}"/>
+</f:metadata>
+
+
+	<h:head>
+	
+		<h:outputScript library="javascript" name="codemirror.js"></h:outputScript>
+		<h:outputScript library="javascript" name="formatting.js"></h:outputScript>
+		<h:outputScript library="javascript" name="modexml/xml.js"></h:outputScript>
+        <h:outputStylesheet library="css" name="codemirror.css" target="head" />
+        
+	</h:head>
+	<h:body>
+		<h:form id="formDetalle">
+			<p:panel header="#{i18n['reporte-auditoria-detalle-auditoria']}">
+
+ 				<p:messages id="messages" />
+ 				
+		      	<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="columnLabelsDetalle,columnDatosDetalle"> 
+		        
+			        <h:outputText value="#{i18n['reporte-auditoria-id-usuario']}"  />
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.userID}" />
+			        
+			        <h:outputText value="#{i18n['reporte-auditoria-nombreCompleto-usuario']}"  />
+			        <h:outputText value="#{consultarAuditoriaBean.selectedRecordUser}" />
+			        
+			        <h:outputText value="#{i18n['reporte-auditoria-comando']}"  />		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.command}" />
+			        
+			        <h:outputText value="#{i18n['reporte-auditoria-company-id']}"  />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.companyId}" />
+	
+			        <h:outputText value="#{i18n['reporte-auditoria-remote-addr']}"  />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.remoteAddr}" /> 
+	
+			        <h:outputText value="#{i18n['reporte-auditoria-remote-host']}"  />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.remoteHost}" /> 
+	
+			        <h:outputText value="#{i18n['reporte-auditoria-scope-id']}"  />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.scopeGroupId}" />	 
+	
+			        <h:outputText value="#{i18n['reporte-auditoria-recurso-id']}"  />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.resourceId}" />
+	
+	
+					<h:outputText value="#{consultarAuditoriaBean.registroSelecionado.preferences}" escape="false"/>
+					
+					
+	<!-- 		        <h:outputText value="#{i18n['reporte-auditoria-preferences']}"  /> -->
+	<!-- 		         <h:panelGroup> -->
+	<!-- 			        <div style="width:500px"> -->
+	<!--  			    	     <p:commandButton onclick="autoFormatSelection();"  type="button" value="Fomato"></p:commandButton>	 -->
+	<!-- 		           		 <h:inputTextarea id="codeMirror" value="#{consultarAuditoriaBean.registroSelecionado.preferences}" /> -->
+	<!-- 					</div> -->
+	<!-- 		        </h:panelGroup>	 -->
+			        				      
+			        <h:outputText value="#{i18n['reporte-auditoria-type-layout']}" rendered="#{not empty consultarAuditoriaBean.registroSelecionado.typeLayout}"  />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.typeLayout}" rendered="#{not empty consultarAuditoriaBean.registroSelecionado.typeLayout}" />
+	
+			        <h:outputText value="#{i18n['reporte-auditoria-type-layout-plid']}" rendered="#{not empty consultarAuditoriaBean.registroSelecionado.typeLayout}" />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.layoutPlid}" rendered="#{not empty consultarAuditoriaBean.registroSelecionado.typeLayout}" />
+	
+			        <h:outputText value="#{i18n['reporte-auditoria-type-layout-url']}" rendered="#{not empty consultarAuditoriaBean.registroSelecionado.layoutURL}" />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.layoutURL}" rendered="#{not empty consultarAuditoriaBean.registroSelecionado.layoutURL}" />
+	
+			        <h:outputText value="#{i18n['reporte-auditoria-fecha-registro']}"  />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.registroSelecionado.fechaRegistro}" >
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+			        		        
+			        <h:outputText value="#{i18n['reporte-auditoria-recurso']}"  />		        		        
+			        <h:outputText value="#{consultarAuditoriaBean.getAuditedResource(consultarAuditoriaBean.registroSelecionado.idAuditedResource).name}" />
+	
+			        <h:outputText value="#{i18n['reporte-auditoria-html']}" rendered="#{not empty consultarAuditoriaBean.registroSelecionado.htmlResult}"  />	
+			        <h:panelGroup rendered="#{not empty consultarAuditoriaBean.registroSelecionado.htmlResult}">
+				        <div style="width:500px">	
+				       	  <p:commandButton onclick="dlg.show();"  type="button" value="Mostrar HTML"></p:commandButton>					
+				        </div>
+			        </h:panelGroup>	        		        
+		        
+		        </h:panelGrid>
+		        <br/>
+		        
+			</p:panel>
+			
+			<p:dialog id="dialog" header="#{i18n['reporte-auditoria-html']}" widgetVar="dlg" dynamic="true">
+   				<iframe  src="/delegate/htmlExport?idAuditLog=#{consultarAuditoriaBean.registroSelecionado.id}" width="960" height="500" >
+   				</iframe>
+			</p:dialog>
+		</h:form>
+		
+		 <script>
+		 /*
+		 var editor;
+		 jQuery(document).ready(function() {
+
+
+					 editor = CodeMirror.fromTextArea(document.getElementById("<portlet:namespace />:formDetalle:codeMirror"), {
+				        lineNumbers: true,
+				        mode: "xml"
+				      });
+				      
+				      CodeMirror.commands["selectAll"](editor);
+				      
+				      
+			 });
+
+		 
+		 function getSelectedRange() {
+	          return { from: editor.getCursor(true), to: editor.getCursor(false) };
+	     }
+	        
+	      function autoFormatSelection() {
+	        var range = getSelectedRange();
+	        editor.autoFormatRange(range.from, range.to);
+	      }
+		         */
+   		 </script>
+		
+	</h:body>
+</f:view>
+</html>
+

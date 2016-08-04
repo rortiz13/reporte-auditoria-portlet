@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<liferay-portlet-app>
+	<portlet>
+	
+		<portlet-name>reporte-auditoria</portlet-name>
+		<icon>/icon.png</icon>
+		<instanceable>false</instanceable>
+		<ajaxable>false</ajaxable>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		
+		<control-panel-entry-category>portal</control-panel-entry-category>
+		<control-panel-entry-weight>16</control-panel-entry-weight>
+		<add-default-resource>true</add-default-resource>
+		
+		<css-class-wrapper>reporte-auditoria-portlet</css-class-wrapper>
+
+		
+	</portlet>
+	<role-mapper>
+		<role-name>administrator</role-name>
+		<role-link>Administrator</role-link>
+	</role-mapper>
+</liferay-portlet-app>

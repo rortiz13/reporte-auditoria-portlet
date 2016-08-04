@@ -1,0 +1,11 @@
+.columnLabelsDetalle {
+  padding: 0 20px 0 0;
+  text-align: left;
+  width: 30%;
+  font-weight: bold;
+  height: 30px; }
+
+.columnDatosDetalle {
+  width: 70%;
+  text-align: left; }
+

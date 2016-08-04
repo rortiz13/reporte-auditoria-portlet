@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aui="http://liferay.com/faces/aui"
+	xmlns:portlet="http://java.sun.com/portlet_2_0"
+	xmlns:aui-cc="http://liferay.com/faces/aui-cc"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ccom="http://netco.la/jsf/ui">
+<f:view encoding="UTF-8">
+	<h:head>
+	</h:head>
+	<h:body>
+		<h:form id="pageForm">
+			<p:panel header="#{i18n['reporte-auditoria-consulta-auditoria']}" id="pagePanel">
+
+ 				<p:messages id="messages" />
+ 				
+		        <h:panelGrid columns="5" width="100%">
+		        
+		            <p:outputLabel for="userName" value="#{i18n['reporte-auditoria-name-usuario']}" />
+		            <p:outputLabel for="layoutURL" value="#{i18n['reporte-auditoria-url']}" />
+		            <p:outputLabel for="command" value="#{i18n['reporte-auditoria-comando']}" />
+		            <p:outputLabel for="resourceId" value="#{i18n['reporte-auditoria-recurso-id']}" />		            
+		            <p:outputLabel for="recurso" value="#{i18n['reporte-auditoria-recurso']}" />
+		            
+		            <p:inputText id="userName" required="false" value="#{consultarAuditoriaBean.userName}"   />
+		            <p:inputText id="layoutURL" required="false"  value="#{consultarAuditoriaBean.url}" />
+		            <p:inputText id="command" required="false" value="#{consultarAuditoriaBean.comando}"  />
+		            <p:inputText id="resourceId" required="false" value="#{consultarAuditoriaBean.idRecurso}"  />
+		            
+		            
+		            <p:selectOneMenu id="recurso" value="#{consultarAuditoriaBean.idAuditedResource}">
+			            <f:selectItem itemLabel="Seleccione" itemValue="" />
+			            <f:selectItems value="#{consultarAuditoriaBean.auditedResourcesItems}"/>
+			        </p:selectOneMenu>
+		         
+		        </h:panelGrid>
+		        <br/>
+		        <h:panelGrid columns="1" width="100%">
+		        
+		            <h:outputText value="#{i18n['reporte-auditoria-fecha-registro']}"  />
+		            <h:panelGrid columns="4" width="70%">
+		            
+		            <p:outputLabel for="desde" value="#{i18n['reporte-auditoria-desde']}" />
+		            <p:calendar id="desde" value="#{consultarAuditoriaBean.fechaInicial}" />  
+		            
+		            <p:outputLabel for="hasta" value="#{i18n['reporte-auditoria-hasta']}" />
+		            <p:calendar id="hasta" value="#{consultarAuditoriaBean.fechaFinal}"   />  
+		            
+		            </h:panelGrid>
+		         
+		        </h:panelGrid>
+ 				<br/>
+				<div align="center">				
+					<p:commandButton ajax="false" value="#{i18n['reporte-auditoria-buscar']}" action="#{consultarAuditoriaBean.cargaFiltrosDataModel}"></p:commandButton>
+					
+					<p:commandButton ajax="false" value="#{i18n['reporte-auditoria-exportar-xls']}" action="#{consultarAuditoriaBean.exportAuditReport('xls')}" rendered="#{consultarAuditoriaBean.principalDataModel != null}"></p:commandButton>
+					
+					<p:commandButton ajax="false" value="#{i18n['reporte-auditoria-exportar-pdf']}" action="#{consultarAuditoriaBean.exportAuditReport('pdf')}" rendered="#{consultarAuditoriaBean.principalDataModel != null}"></p:commandButton>
+				</div>
+				<br/>
+				<p:dataTable id="datosAuditoria"  value="#{consultarAuditoriaBean.principalDataModel}" var="auditoria" rows="10" paginator="true" paginatorPosition="bottom" lazy="true" >
+
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="#{i18n['reporte-auditoria-id-auditoria']}" />
+						</f:facet>
+						<h:outputText value="#{auditoria.id}" />
+					</p:column>
+
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="#{i18n['reporte-auditoria-name-usuario']}" />
+						</f:facet>
+						<h:outputText value="#{auditoria.username}" />
+					</p:column>
+
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="#{i18n['reporte-auditoria-fecha-registro']}" />
+						</f:facet>
+						<h:outputText value="#{auditoria.fechaRegistro}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-05:00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="#{i18n['reporte-auditoria-comando']}" />
+						</f:facet>
+						<h:outputText value="#{auditoria.command}" />
+					</p:column>
+
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="#{i18n['reporte-auditoria-url']}" />
+						</f:facet>
+						<h:outputText value="#{auditoria.layoutURL}" />
+					</p:column>
+
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="#{i18n['reporte-auditoria-recurso']}" />
+						</f:facet>
+						<h:outputText value="#{consultarAuditoriaBean.getAuditedResource(auditoria.idAuditedResource).name}" />
+					</p:column>
+
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="#{i18n['reporte-auditoria-recurso-id']}" />
+						</f:facet>
+						<h:outputText value="#{auditoria.resourceId}" />
+					</p:column>
+					
+					<p:column exportable="false">
+						<h:commandLink action="detalle" value="#{i18n['reporte-auditoria-detalle']}">
+								<f:param name="idRegSeleccionado" value="#{auditoria.id}" />
+					</h:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</h:body>
+</f:view>
+
+</html>
+
